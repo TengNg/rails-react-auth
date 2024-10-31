@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: f8da6d99-eb5c-4292-b1a7-b7b323da9760
+  title: card one
+
+two:
+  user_id: f8da6d99-eb5c-4292-b1a7-b7b323da9760
+  title: card two
