@@ -1,8 +1,8 @@
 import { Outlet, useNavigate } from 'react-router-dom'
-import { useCurrentUserQuery } from '../../hooks/useCurrentUserQuery'
+import useCurrentUserContext from '../../hooks/useCurrentUserContext'
 
 export default function RequireAuth() {
-    const currentUserQuery = useCurrentUserQuery();
+    const currentUserQuery = useCurrentUserContext();
     const navigate = useNavigate();
 
     if (currentUserQuery.isPending) {

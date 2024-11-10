@@ -8,23 +8,22 @@ const api = axios.create({
     headers: { 'Content-Type': 'application/json' }
 });
 
-api.interceptors.response.use(
-    response => response,
-    async (error) => {
-        const originalRequest = error?.config;
-        if (error?.response?.status === 401 && !("_retry" in originalRequest)) {
-            originalRequest._retry = true;
-            try {
-                await api.post('/auth/refresh');
-                return api(originalRequest);
-            } catch (error) {
-                await api.delete('/auth/logout');
-                window.location.reload();
-            }
-        }
-        return Promise.reject(error);
-    }
-);
+// api.interceptors.response.use(
+//     response => response,
+//     async (error) => {
+//         const originalRequest = error?.config;
+//         if (error?.response?.status === 401 && !("_retry" in originalRequest)) {
+//             originalRequest._retry = true;
+//             try {
+//                 await api.post('/auth/refresh');
+//                 return api(originalRequest);
+//             } catch (error) {
+//                 await api.delete('/auth/logout');
+//                 window.location.reload();
+//             }
+//         }
+//         return Promise.reject(error);
+//     }
+// );
 
 export { api };
-

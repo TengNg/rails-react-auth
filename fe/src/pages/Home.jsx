@@ -18,7 +18,7 @@ const Home = () => {
 
     async function logoutOfAllDevices() {
         try {
-            await axios.delete('/auth/logout_of_all_devices');
+            await axios.delete('/logout_of_all_devices');
             navigate('/login');
         } catch (err) {
             console.log(err);

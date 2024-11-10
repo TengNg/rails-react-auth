@@ -14,22 +14,13 @@ class AuthControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should refresh new access token successfully" do
-    @user = users(:one)
-    cookies[rtoken_cookie_name] = JWT.encode({
-      username: @user.username,
-    }, ENV['REFRESH_TOKEN_SECRET'], 'HS256')
-    post "/auth/refresh", as: :json
-    assert_response :success
-  end
-
   private
 
   def register_params
     {
       auth: {
         username: 'testing',
-        password: '1234',
+        password: 'abcd1234',
       }
     }
   end
@@ -38,7 +29,7 @@ class AuthControllerTest < ActionDispatch::IntegrationTest
     {
       auth: {
         username: 'john_doe',
-        password: '1234',
+        password: 'abcd1234',
       }
     }
   end

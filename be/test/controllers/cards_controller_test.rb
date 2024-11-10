@@ -4,9 +4,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:one)
     @card = cards(:one)
-    payload = { username: @user.username }
-    @token = JWT.encode(payload, ENV['ACCESS_TOKEN_SECRET'], 'HS256')
-    cookies[atoken_cookie_name] = @token
+    set_auth_cookies(user: @user)
   end
 
   test "should get index" do

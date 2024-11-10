@@ -12,6 +12,7 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }
 
   # Bcrypt validate password
+  #
   # @param password [String] password to validate
   # @return [Boolean]
   def validate_password(password:)
