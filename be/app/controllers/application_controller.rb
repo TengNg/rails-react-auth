@@ -3,45 +3,127 @@ class ApplicationController < ActionController::API
 
   private
 
-  def decoded_refresh_token_version(token:, token_secret:)
-    decoded_user_data(token:, token_secret:).fetch('refresh_token_version')
-  end
-
-  def decoded_username(token:, token_secret:)
-    decoded_user_data(token:, token_secret:).fetch('username')
-  end
-
+  # Get `user_data` from `decoded_data` (see #decoded_data)
+  #
+  # @param token [String]
+  # @param token_secret [String]
+  # @return [Object] decoded data
   def decoded_user_data(token:, token_secret:)
     decoded_data(token:, token_secret:, key: 'user_data')
   end
 
-  # Get decoded data from given jwt token
+  # Get decoded data from given jwt tokens
+  #
   # @param token [String]
   # @param token_secret [String]
   # @param key [String] data key name
-  # @return [String] decoded username
+  # @return [Object] decoded data
   def decoded_data(token:, token_secret:, key: nil)
-    decoded = decode_token(token:, token_secret:)
+    decoded = decoded_token(token:, token_secret:)
     key.nil? ? decoded[0] : (decoded[0][key] || decoded[0])
   end
 
   # Decode jwt token
+  #
   # @param token [String]
   # @param token_secret [String]
   # @return [Hash] decoded token
-  def decode_token(token:, token_secret:)
+  def decoded_token(token:, token_secret:)
     JWT.decode(token, token_secret, true, { algorithm: 'HS256' })
   end
 
   # Get refresh token cookie name
+  #
   # @return [String]
   def rtoken_cookie_name
     "#{ENV['REFRESH_TOKEN_COOKIE_PREFIX'] or ''}_rtoken"
   end
 
   # Get access token cookie name
+  #
   # @return [String]
   def atoken_cookie_name
     "#{ENV['ACCESS_TOKEN_COOKIE_PREFIX'] or ''}_atoken"
+  end
+
+  # Generate JWT access token
+  #
+  # @param user [User]
+  # @return [String] access token
+  def generate_access_token(user:)
+    payload = {
+      user_data: {
+        id: user.id,
+        username: user.username,
+        refresh_token_version: user.refresh_token_version,
+      },
+      exp: 15.minutes.from_now.to_i
+    }
+    JWT.encode(payload, ENV['ACCESS_TOKEN_SECRET'], 'HS256')
+  end
+
+  # Generate JWT refresh token
+  #
+  # @param user [User]
+  # @return [String] refresh token
+  def generate_refresh_token(user:)
+    payload = {
+      user_data: {
+        id: user.id,
+        username: user.username,
+        refresh_token_version: user.refresh_token_version,
+      },
+      exp: 1.week.from_now.to_i
+    }
+    JWT.encode(payload, ENV['REFRESH_TOKEN_SECRET'], 'HS256')
+  end
+
+  # Store tokens in secure, HttpOnly cookies
+  #
+  # @param access_token [String] access token
+  # @param refresh_token [String] refresh token
+  def set_auth_cookies(access_token:, refresh_token:)
+    set_access_token_cookie(access_token:)
+    set_refresh_token_cookie(refresh_token:)
+  end
+
+  # Store access token in secure, HttpOnly cookies
+  #
+  # @param access_token [String] access token
+  def set_access_token_cookie(access_token:)
+    cookies[atoken_cookie_name] = {
+      value: access_token,
+      httponly: true,
+      secure: true,
+      same_site: :none,
+      expires: 15.minutes.from_now
+    }
+  end
+
+  # Store refresh token in secure, HttpOnly cookies
+  #
+  # @param refresh_token [String] refresh token
+  def set_refresh_token_cookie(refresh_token:)
+    cookies[rtoken_cookie_name] = {
+      value: refresh_token,
+      httponly: true,
+      secure: true,
+      same_site: :none,
+      expires: 1.week.from_now
+    }
+  end
+
+  # Delete access & refresh tokens from cookies
+  def delete_auth_cookies
+    delete_access_token_cookie
+    delete_refresh_token_cookie
+  end
+
+  def delete_access_token_cookie
+    cookies.delete(atoken_cookie_name)
+  end
+
+  def delete_refresh_token_cookie
+    cookies.delete(rtoken_cookie_name)
   end
 end

@@ -18,5 +18,18 @@ module ActiveSupport
     def atoken_cookie_name
       "#{ENV['ACCESS_TOKEN_COOKIE_PREFIX'] or ''}_atoken"
     end
+
+    def set_auth_cookies(user:)
+      payload = {
+        user_data: {
+          id: user.id,
+          username: user.username,
+          refresh_token_version: user.refresh_token_version,
+        }
+      }
+      @token = JWT.encode(payload, ENV['ACCESS_TOKEN_SECRET'], 'HS256')
+      cookies[atoken_cookie_name] = @token
+      user
+    end
   end
 end

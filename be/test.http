@@ -1,0 +1,50 @@
+### register
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "auth": {
+        "username": "testing123",
+        "password": "abcd1234"
+    }
+}
+
+### login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "auth": {
+        "username": "testing123",
+        "password": "abcd1234"
+    }
+}
+
+### cards
+GET http://localhost:3000/cards
+Content-Type: application/json
+
+### create-card
+POST http://localhost:3000/cards
+Content-Type: application/json
+
+{
+    "card": {
+        "title": "first card"
+    }
+}
+
+### update-card
+PUT http://localhost:3000/cards/d5085c5f-2a20-49a6-86da-9abb414ff59b
+Content-Type: application/json
+
+{
+    "card": {
+        "title": "first card 02"
+    }
+}
+
+### delete-card
+DELETE http://localhost:3000/cards/34af6c77-da45-4222-9c05-7d383f69c801
+Content-Type: application/json
+

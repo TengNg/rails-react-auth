@@ -8,7 +8,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-user = User.create(username: 'testing', password: '1234')
+user = User.create(username: 'testing', password: '123456')
 
 10.times do |i|
   Card.create(title: "Card #{i + 1}", user_id: user.id)

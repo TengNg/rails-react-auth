@@ -1,9 +1,9 @@
-import { useCurrentUserQuery } from "../hooks/useCurrentUserQuery"
 import { Outlet, useNavigate } from "react-router-dom";
 import { api as axios } from "../api/axios";
+import useCurrentUserContext from "../hooks/useCurrentUserContext";
 
 const Home = () => {
-    const currentUserQuery = useCurrentUserQuery();
+    const currentUserQuery = useCurrentUserContext();
 
     const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const Home = () => {
 
     async function logoutOfAllDevices() {
         try {
-            await axios.delete('/auth/logout_of_all_devices');
+            await axios.delete('/logout_of_all_devices');
             navigate('/login');
         } catch (err) {
             console.log(err);
