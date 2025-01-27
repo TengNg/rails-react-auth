@@ -1,7 +1,22 @@
 class ApplicationController < ActionController::API
   include ActionController::Cookies
 
+  rate_limit(
+    to: 100,
+    within: 10.minute,
+    name: "global",
+    only: :all,
+    with: -> { handle_rate_limit }
+  )
+
   private
+
+  # Rate limit handler, return 429
+  #
+  # @param err_msg [String] custom error message
+  def handle_rate_limit(err_msg = 'Too many requests, please try again later')
+    render json: { message: err_msg }, status: :too_many_requests
+  end
 
   # Get `user_data` from `decoded_data` (see #decoded_data)
   #

@@ -1,4 +1,20 @@
 class AuthController < ApplicationController
+  rate_limit(
+    to: 10,
+    within: 1.minute,
+    name: "register",
+    only: :register,
+    with: -> { handle_rate_limit }
+  )
+
+  rate_limit(
+    to: 10,
+    within: 1.minute,
+    name: "login",
+    only: :login,
+    with: -> { handle_rate_limit }
+  )
+
   def register
     found_user = User.find_by(username: permitted_params[:username])
     return render json: { message: 'Username is already taken' }, status: :conflict if found_user

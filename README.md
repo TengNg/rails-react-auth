@@ -12,7 +12,7 @@ Simple token-based authentication with Rails + React
 
 ### Setup
 
-#### be (Rails 7+), steps:
+#### be (Rails 8), steps:
 - run `bundle install`
 - run `rails db:create db:migrate`
 - run `rails db:seed`
@@ -27,7 +27,7 @@ Simple token-based authentication with Rails + React
   ```
 - run `rails server`
 
-#### fe (React 18+), steps:
+#### fe (React 19), steps:
 - run `npm install`
 - run `npm run dev`
 - open `http://localhost:5173`

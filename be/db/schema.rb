@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_27_111553) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_02_025104) do
   create_table "cards", id: :string, force: :cascade do |t|
     t.string "user_id", null: false
     t.string "title"
@@ -42,5 +42,4 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_27_111553) do
     t.index ["role_id"], name: "index_users_roles_on_role_id"
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
-
 end
