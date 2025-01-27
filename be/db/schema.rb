@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_01_053443) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_27_111553) do
   create_table "cards", id: :string, force: :cascade do |t|
     t.string "user_id", null: false
     t.string "title"
@@ -19,12 +19,28 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_01_053443) do
     t.index ["user_id"], name: "index_cards_on_user_id"
   end
 
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", id: :string, force: :cascade do |t|
     t.string "username"
     t.string "password"
     t.integer "refresh_token_version", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "users_roles", force: :cascade do |t|
+    t.string "user_id", null: false
+    t.string "role_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_users_roles_on_role_id"
+    t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
 end

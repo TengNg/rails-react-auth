@@ -9,6 +9,11 @@
 #   end
 
 user = User.create(username: 'testing', password: '123456')
+roles = Role.create([
+  { name: 'user', description: 'user' },
+  { name: 'admin', description: 'admin' }
+])
+user.role_ids = roles.pluck(:id)
 
 10.times do |i|
   Card.create(title: "Card #{i + 1}", user_id: user.id)

@@ -9,4 +9,8 @@ Rails.application.routes.draw do
   post '/logout_of_all_devices', to: 'users#logout_of_all_devices'
 
   resources :cards
+
+  namespace :admin do
+    resource :test
+  end
 end

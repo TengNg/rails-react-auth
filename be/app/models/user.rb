@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   # Associations
   has_many :cards
+  has_and_belongs_to_many :roles, join_table: :users_roles
 
   # Callbacks
   before_save :hash_password
@@ -24,6 +25,10 @@ class User < ApplicationRecord
 
   def as_json
     { id:, username: }
+  end
+
+  def admin?
+    roles.pluck(:name).include?('admin')
   end
 
   private
