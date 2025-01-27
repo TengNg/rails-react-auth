@@ -49,3 +49,4 @@ gem 'dotenv', groups: [:development, :test]
 gem 'jwt'
 gem 'bcrypt'
 gem 'rack-cors'
+gem 'rack-attack'

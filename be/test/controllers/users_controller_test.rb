@@ -1,4 +1,4 @@
-require "test_helper"
+require "./test/test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -18,10 +18,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should logout successfully" do
     user = users(:one)
-    username = user.username
     set_auth_cookies(user:)
 
-    post '/logout'
+    delete '/logout'
     assert_response :success
   end
 
@@ -32,7 +31,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     query = "User.find_by(username: '#{username}').refresh_token_version"
     assert_difference(query) do
-      post '/logout_of_all_devices'
+      delete '/logout_of_all_devices'
     end
 
     assert_response :success

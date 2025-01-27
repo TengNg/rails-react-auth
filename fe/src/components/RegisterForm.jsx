@@ -19,7 +19,7 @@ function RegisterForm() {
                 }
             });
             await axios.post('/auth/register', reqBody);
-            navigate('/');
+            navigate('/login');
         } catch (error) {
             setErrMsg(error.response.data.message);
         }

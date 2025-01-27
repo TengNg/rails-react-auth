@@ -3,7 +3,12 @@ class CardsController < ProtectedController
 
   # GET /cards
   def index
-    @cards = @user.cards
+    if @user
+      @cards = @user.cards
+    else
+      @cards = Card.where(user_id: @user_id)
+    end
+
     render json: @cards
   end
 
@@ -14,7 +19,11 @@ class CardsController < ProtectedController
 
   # POST /cards
   def create
-    @card = @user.cards.new(card_params)
+    if @user
+      @card = @user.cards.new(card_params)
+    else
+      @card = Card.new(card_params.merge(user_id: @user_id))
+    end
 
     if @card.save
       render json: @card, status: :created, location: @card
@@ -40,7 +49,14 @@ class CardsController < ProtectedController
   private
 
   def set_card
-    @card = @user.cards.find(params[:id])
+    if @user
+      @card = @user.cards.find(params[:id])
+      return
+    end
+
+    @card = Card.where(user_id: @user_id).find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    render json: { message: 'Card not found' }, status: :not_found
   end
 
   def card_params

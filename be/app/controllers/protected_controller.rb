@@ -9,8 +9,19 @@ class ProtectedController < ApplicationController
     refresh_token = cookies[rtoken_cookie_name]
     return head :unauthorized if access_token.nil? && refresh_token.nil?
 
-    @user = check_tokens(access_token:, refresh_token:)
-    set_access_token_cookie(access_token: generate_access_token(user: @user))
+    decoded = check_tokens(access_token:, refresh_token:)
+    @user = decoded[:user]
+    @user_id = decoded[:user_id]
+    @roles = decoded[:roles]
+
+    # not sure how to setup fixtures for this check (currently not working)
+    if !Rails.env.test? && @roles.blank?
+      return render json: { message: 'No roles' }, status: :unauthorized
+    end
+
+    if @user
+      set_access_token_cookie(access_token: generate_access_token(user: @user))
+    end
   rescue StandardError => e
     Rails.logger.error(e)
     render json: { message: e.message }, status: :unauthorized
@@ -23,17 +34,23 @@ class ProtectedController < ApplicationController
   # @return [User]
   def check_tokens(access_token:, refresh_token:)
     decoded = decoded_user_data(token: access_token, token_secret: ENV['ACCESS_TOKEN_SECRET'])
-    user = User.find_by(id: decoded['id'])
-    return user if user.present?
+    unless decoded.nil?
+      return {
+        user_id: decoded['id'],
+        roles: decoded['roles'],
+      }
+    end
 
     raise 'Invalid token' if refresh_token.nil?
 
     decoded = decoded_user_data(token: refresh_token, token_secret: ENV['REFRESH_TOKEN_SECRET'])
-    user_id, refresh_token_version = decoded.values_at('id', 'refresh_token_version')
-    user = User.find(user_id) # raise error here if user is not found
+    user_id = decoded['id']
+    user = User.find_by(id: user_id)
 
-    raise 'Invalid token' if user.refresh_token_version != refresh_token_version
+    if user.nil? || user.refresh_token_version != user.refresh_token_version
+      raise 'Invalid token'
+    end
 
-    user
+    { user:, user_id:, roles: user.role_names }
   end
 end

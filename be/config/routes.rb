@@ -5,12 +5,14 @@ Rails.application.routes.draw do
 
   get '/profile', to: 'users#current'
   get '/users/:username', to: 'users#show_by_username'
-  post '/logout', to: 'users#logout'
-  post '/logout_of_all_devices', to: 'users#logout_of_all_devices'
+  delete '/logout', to: 'users#logout'
+  delete '/logout_of_all_devices', to: 'users#logout_of_all_devices'
 
   resources :cards
 
-  namespace :admin do
-    resource :test
-  end
+  get '/admin/test', to: 'admin/test#test'
+
+  # namespace :admin do
+  #   resource :test
+  # end
 end

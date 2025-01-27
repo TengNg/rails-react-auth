@@ -1,4 +1,4 @@
-require "test_helper"
+require "./test/test_helper"
 
 class AuthControllerTest < ActionDispatch::IntegrationTest
   test "should register successfully" do

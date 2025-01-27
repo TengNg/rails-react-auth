@@ -1,9 +1,10 @@
-require "test_helper"
+require "./test/test_helper"
 
 class CardsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:one)
     @card = cards(:one)
+
     set_auth_cookies(user: @user)
   end
 

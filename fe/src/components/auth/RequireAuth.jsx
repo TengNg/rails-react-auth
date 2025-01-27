@@ -1,7 +1,8 @@
+import Unauthorized from '../../pages/Unauthorized';
 import { Outlet, useNavigate } from 'react-router-dom'
 import useCurrentUserContext from '../../hooks/useCurrentUserContext'
 
-export default function RequireAuth() {
+export default function RequireAuth({ allowedRoles }) {
     const currentUserQuery = useCurrentUserContext();
     const navigate = useNavigate();
 
@@ -16,6 +17,13 @@ export default function RequireAuth() {
         </div>
     }
 
-    return <Outlet />
+    const roles = currentUserQuery.data.roles;
+    if (roles.length === 0 || !roles.some(role => allowedRoles.includes(role))) {
+        return <Unauthorized />
+    }
+
+    return <div className="p-8 overflow-auto border-2 border-gray-200">
+        <Outlet />
+    </div>
 }
 

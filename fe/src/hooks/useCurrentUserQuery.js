@@ -3,7 +3,7 @@ import { fetchCurrentUser } from '../api/userApi'
 
 export const useCurrentUserQuery = () => {
     return useQuery({
-        queryKey: ['profile'],
+        queryKey: ['me'],
         queryFn: () => fetchCurrentUser(),
     });
 }

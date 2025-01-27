@@ -20,6 +20,8 @@ class ApplicationController < ActionController::API
   # @return [Object] decoded data
   def decoded_data(token:, token_secret:, key: nil)
     decoded = decoded_token(token:, token_secret:)
+    return nil if decoded.nil?
+
     key.nil? ? decoded[0] : (decoded[0][key] || decoded[0])
   end
 
@@ -30,6 +32,8 @@ class ApplicationController < ActionController::API
   # @return [Hash] decoded token
   def decoded_token(token:, token_secret:)
     JWT.decode(token, token_secret, true, { algorithm: 'HS256' })
+  rescue JWT::DecodeError
+    nil
   end
 
   # Get refresh token cookie name
@@ -55,6 +59,7 @@ class ApplicationController < ActionController::API
       user_data: {
         id: user.id,
         username: user.username,
+        roles: user.roles.pluck(:name),
         refresh_token_version: user.refresh_token_version,
       },
       exp: 15.minutes.from_now.to_i
@@ -71,6 +76,7 @@ class ApplicationController < ActionController::API
       user_data: {
         id: user.id,
         username: user.username,
+        roles: user.roles.pluck(:name),
         refresh_token_version: user.refresh_token_version,
       },
       exp: 1.week.from_now.to_i
