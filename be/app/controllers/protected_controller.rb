@@ -33,7 +33,10 @@ class ProtectedController < ApplicationController
   # @param [String] refresh_token
   # @return [User]
   def check_tokens(access_token:, refresh_token:)
-    decoded = decoded_user_data(token: access_token, token_secret: ENV['ACCESS_TOKEN_SECRET'])
+    decoded = decoded_user_data(
+      token: access_token,
+      token_secret: ENV['ACCESS_TOKEN_SECRET']
+    )
     unless decoded.nil?
       return {
         user_id: decoded['id'],
@@ -43,14 +46,18 @@ class ProtectedController < ApplicationController
 
     raise 'Invalid token' if refresh_token.nil?
 
-    decoded = decoded_user_data(token: refresh_token, token_secret: ENV['REFRESH_TOKEN_SECRET'])
-    user_id = decoded['id']
-    user = User.find_by(id: user_id)
+    decoded = decoded_user_data(
+      token: refresh_token,
+      token_secret: ENV['REFRESH_TOKEN_SECRET']
+    )
 
-    if user.nil? || user.refresh_token_version != user.refresh_token_version
+    user = User.find_by(id: decoded['id'])
+
+    if user.nil? ||
+        user.refresh_token_version != decoded['refresh_token_version']
       raise 'Invalid token'
     end
 
-    { user:, user_id:, roles: user.role_names }
+    { user:, user_id: user.id, roles: user.role_names }
   end
 end

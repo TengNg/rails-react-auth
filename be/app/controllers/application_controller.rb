@@ -1,13 +1,7 @@
 class ApplicationController < ActionController::API
   include ActionController::Cookies
 
-  rate_limit(
-    to: 100,
-    within: 10.minute,
-    name: "global",
-    only: :all,
-    with: -> { handle_rate_limit }
-  )
+  rate_limit to: 50, within: 10.minute, with: -> { handle_rate_limit }
 
   private
 

@@ -21,7 +21,7 @@ function LoginForm() {
             await axios.post('/auth/login', reqBody);
             navigate('/');
         } catch (error) {
-            setErrMsg(error.response.data.message);
+            setErrMsg(error.response?.data?.message || "Failed to login");
         }
     }
 

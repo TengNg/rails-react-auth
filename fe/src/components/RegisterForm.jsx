@@ -21,7 +21,7 @@ function RegisterForm() {
             await axios.post('/auth/register', reqBody);
             navigate('/login');
         } catch (error) {
-            setErrMsg(error.response.data.message);
+            setErrMsg(error.response?.data?.message || "Failed to sign up");
         }
     }
 

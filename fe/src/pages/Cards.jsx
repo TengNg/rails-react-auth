@@ -16,7 +16,7 @@ const Cards = () => {
     return (
         <div>
             <h3>Cards</h3>
-            <div className='max-h-[300px] overflow-auto'>
+            <div className='h-[20rem] w-[35rem] overflow-auto'>
                 <pre>{JSON.stringify(cardsQuery.data, null, 2) }</pre>
             </div>
 

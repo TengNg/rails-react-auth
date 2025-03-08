@@ -2,16 +2,7 @@ class AuthController < ApplicationController
   rate_limit(
     to: 10,
     within: 1.minute,
-    name: "register",
-    only: :register,
-    with: -> { handle_rate_limit }
-  )
-
-  rate_limit(
-    to: 10,
-    within: 1.minute,
-    name: "login",
-    only: :login,
+    only: [ :login, :register ],
     with: -> { handle_rate_limit }
   )
 

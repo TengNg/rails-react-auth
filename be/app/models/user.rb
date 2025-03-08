@@ -6,7 +6,7 @@ class User < ApplicationRecord
   has_and_belongs_to_many :roles, join_table: :users_roles, dependent: :destroy
 
   # Callbacks
-  before_save :hash_password
+  before_create :hash_password
   after_commit :assign_roles, on: :create, unless: -> { Rails.env.test? }
   after_commit :generate_initial_cards, on: :create, unless: -> { Rails.env.test? }
 
@@ -43,11 +43,15 @@ class User < ApplicationRecord
     self.password = BCrypt::Password.create(self.password)
   end
 
-  def assign_roles(roles = [1])
-    self.role_ids = [1]
+  def assign_roles(role_ids = [1])
+    return if self.roles.empty?
+
+    self.role_ids = role_ids
   end
 
   def generate_initial_cards(n = 3)
+    return if self.cards.empty?
+
     create_payload = []
     n.times do |index|
       create_payload << {
