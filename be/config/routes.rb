@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  post '/test', to: 'test#test'
+  post '/test2', to: 'test#test2'
+
   post 'auth/login', to: 'auth#login'
   post 'auth/register', to: 'auth#register'
   # post 'auth/refresh', to: 'auth#register'

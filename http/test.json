@@ -1,0 +1,97 @@
+{
+  "info": {
+    "description": "Exported from Kulala: /home/dtien/personal/rails-react-auth/http/test.http",
+    "name": "test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/"
+  },
+  "item": [
+    {
+      "description": "Kulala Export: /home/dtien/personal/rails-react-auth/http/test.http",
+      "item": [
+        {
+          "event": [],
+          "id": "test:1",
+          "name": "POST {{url}}/test",
+          "request": {
+            "auth": {
+              "type": ""
+            },
+            "body": {
+              "disabled": false,
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Tien\",\n    \"last_name\": \"Nguyen\"\n}"
+            },
+            "description": "get test 1",
+            "header": [
+              {
+                "disabled": false,
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "disabled": false,
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "url": {
+              "host": "{{url}}",
+              "path": "/test",
+              "protocol": "http",
+              "query": [],
+              "raw": "{{url}}/test"
+            }
+          },
+          "response": []
+        },
+        {
+          "event": [],
+          "id": "test:14",
+          "name": "POST {{url}}/test2",
+          "request": {
+            "auth": {
+              "type": ""
+            },
+            "body": {
+              "disabled": false,
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Tien\",\n    \"last_name\": \"Nguyen\"\n}"
+            },
+            "description": "get test 2",
+            "header": [
+              {
+                "disabled": false,
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "disabled": false,
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "url": {
+              "host": "{{url}}",
+              "path": "/test2",
+              "protocol": "http",
+              "query": [],
+              "raw": "{{url}}/test2"
+            }
+          },
+          "response": []
+        }
+      ],
+      "name": "test"
+    }
+  ],
+  "variable": [
+    {
+      "disabled": false,
+      "id": "url",
+      "key": "url",
+      "value": "http://localhost:3000"
+    }
+  ]
+}

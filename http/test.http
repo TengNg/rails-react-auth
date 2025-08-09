@@ -1,0 +1,23 @@
+@url = http://localhost:3000
+
+# get test 1
+POST {{url}}/test
+Accept: application/json
+Content-Type: application/json
+
+{
+    "first_name": "Tien",
+    "last_name": "Nguyen"
+}
+
+###
+
+# get test 2
+POST {{url}}/test2
+Accept: application/json
+Content-Type: application/json
+
+{
+    "first_name": "Tien",
+    "last_name": "Nguyen"
+}
